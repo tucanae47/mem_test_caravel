@@ -34,7 +34,6 @@ module memtest (
     
 );
 
-    parameter integer WORDS = 8;
     parameter integer COLS = 1;
     parameter ADR_WIDTH = 8;
 
@@ -70,7 +69,6 @@ module memtest (
     soc_mem
 `ifndef USE_OPENRAM
     #(
-        .WORDS(WORDS),
         .COLS(COLS),
         .ADR_WIDTH(ADR_WIDTH)
     )
@@ -93,8 +91,7 @@ endmodule
 module soc_mem 
 `ifndef USE_OPENRAM
 #(
-    parameter integer WORDS = 32,
-    parameter integer COLS = 4,
+    parameter integer COLS = 1,
     parameter ADR_WIDTH = 8
 )
 `endif
@@ -111,7 +108,10 @@ module soc_mem
     output[31:0] rdata
 );
 
-    DFFRAM #(.COLS(COLS)) SRAM (
+    DFFRAM #(
+	    .COLS(COLS),
+	    .A_WIDTH(ADR_WIDTH)) 
+    SRAM (
     `ifdef USE_POWER_PINS
         .VPWR(VPWR),
         .VGND(VGND),

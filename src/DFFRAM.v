@@ -15,7 +15,10 @@
 
 `default_nettype none
 
-module DFFRAM #( parameter COLS=1)
+module DFFRAM #( 
+parameter integer COLS=1,
+parameter A_WIDTH=8
+)
 (
 `ifdef USE_POWER_PINS
     VPWR,
@@ -28,7 +31,6 @@ module DFFRAM #( parameter COLS=1)
     Do,
     A
 );
-    localparam A_WIDTH = 8+$clog2(COLS);
 
 `ifdef USE_POWER_PINS
     input VPWR;
@@ -41,7 +43,7 @@ module DFFRAM #( parameter COLS=1)
     output  reg     [31:0]  Do;
     input   wire    [(A_WIDTH - 1): 0]   A;
 
-    reg [31:0] RAM[(256*COLS)-1 : 0];
+    reg [31:0] RAM[(64*COLS)-1 : 0];
 
     always @(posedge CLK)
         if(EN) begin
